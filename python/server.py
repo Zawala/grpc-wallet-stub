@@ -1,6 +1,7 @@
 import grpc
 from concurrent import futures
 import time
+from mongo_interface import wallet_user
 from .databank import (wallet_pb2, wallet_pb2_grpc)
 
 class walletServicer(wallet_pb2_grpc.wallet__pb2):

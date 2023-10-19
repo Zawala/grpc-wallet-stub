@@ -9,5 +9,5 @@ services:
     volumes:
       - /home/user/Documents/github/grpcwallet/mongodb/database
     ports:
-    - 27017:27010
+    - 27010:27017
     restart: unless-stopped
