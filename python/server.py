@@ -1,22 +1,21 @@
 import grpc
 from concurrent import futures
 import time
-from grpc_gen import (users_pb2_grpc,users_pb2)
-from function import users
+from .databank import (wallet_pb2, wallet_pb2_grpc)
 
-class UserServicer(users_pb2_grpc.usersServicer):
-    def display(self,request, context):
-        response =  users_pb2.response()
+class walletServicer(wallet_pb2_grpc.wallet__pb2):
+    def credit(self,request, context):
+        response =  wallet_pb2.reply()
         response.reply= users.display(request.name)
         return response
 
-    def delete(self,request, context):
-        response =  users_pb2.response()
+    def debit(self,request, context):
+        response =  wallet_pb2.reply()
         response.value= users.delete(request.name)
         return response
 
-    def add(self,request, context):
-        response =  users_pb2.response()
+    def balance(self,request, context):
+        response =  wallet_pb2.reply()
         response.value= users.add(request.name, request.address)
         return response
 
@@ -26,8 +25,8 @@ def run():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     # use the generated function `add_CalculatorServicer_to_server`
     # to add the defined class to the server
-    users_pb2_grpc.add_usersServicer_to_server(
-            UserServicer(), server)
+    wallet_pb2.add_usersServicer_to_server(
+            walletServicer(), server)
 
         # listen on port 50051
     print('Starting server. Listening on port 50051.')
