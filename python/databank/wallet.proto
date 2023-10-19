@@ -5,6 +5,8 @@ service wallet {
   rpc debit (user) returns (reply) {}
   rpc credit (user) returns (reply) {}
   rpc balance (user) returns (reply){}
+  rpc add_user (user) returns (reply){}
+  rpc remove_user (user) returns (reply){}
 }
 
 message user{

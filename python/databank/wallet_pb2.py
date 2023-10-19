@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cwallet.proto\x12\x08\x64\x61tabank\"8\n\x04user\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x0c\n\x04voip\x18\x02 \x01(\x02\x12\x10\n\x08monetary\x18\x03 \x01(\x02\"5\n\x05reply\x12\x0c\n\x04voip\x18\x01 \x01(\x02\x12\x10\n\x08monetary\x18\x02 \x01(\x02\x12\x0c\n\x04info\x18\x03 \x01(\t2\x8f\x01\n\x06wallet\x12*\n\x05\x64\x65\x62it\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x12+\n\x06\x63redit\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x12,\n\x07\x62\x61lance\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cwallet.proto\x12\x08\x64\x61tabank\"8\n\x04user\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x0c\n\x04voip\x18\x02 \x01(\x02\x12\x10\n\x08monetary\x18\x03 \x01(\x02\"5\n\x05reply\x12\x0c\n\x04voip\x18\x01 \x01(\x02\x12\x10\n\x08monetary\x18\x02 \x01(\x02\x12\x0c\n\x04info\x18\x03 \x01(\t2\xf0\x01\n\x06wallet\x12*\n\x05\x64\x65\x62it\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x12+\n\x06\x63redit\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x12,\n\x07\x62\x61lance\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x12-\n\x08\x61\x64\x64_user\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x12\x30\n\x0bremove_user\x12\x0e.databank.user\x1a\x0f.databank.reply\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -25,5 +25,5 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_REPLY']._serialized_start=84
   _globals['_REPLY']._serialized_end=137
   _globals['_WALLET']._serialized_start=140
-  _globals['_WALLET']._serialized_end=283
+  _globals['_WALLET']._serialized_end=380
 # @@protoc_insertion_point(module_scope)

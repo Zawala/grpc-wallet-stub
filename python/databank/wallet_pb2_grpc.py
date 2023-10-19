@@ -29,6 +29,16 @@ class walletStub(object):
                 request_serializer=wallet__pb2.user.SerializeToString,
                 response_deserializer=wallet__pb2.reply.FromString,
                 )
+        self.add_user = channel.unary_unary(
+                '/databank.wallet/add_user',
+                request_serializer=wallet__pb2.user.SerializeToString,
+                response_deserializer=wallet__pb2.reply.FromString,
+                )
+        self.remove_user = channel.unary_unary(
+                '/databank.wallet/remove_user',
+                request_serializer=wallet__pb2.user.SerializeToString,
+                response_deserializer=wallet__pb2.reply.FromString,
+                )
 
 
 class walletServicer(object):
@@ -52,6 +62,18 @@ class walletServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def add_user(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def remove_user(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_walletServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -67,6 +89,16 @@ def add_walletServicer_to_server(servicer, server):
             ),
             'balance': grpc.unary_unary_rpc_method_handler(
                     servicer.balance,
+                    request_deserializer=wallet__pb2.user.FromString,
+                    response_serializer=wallet__pb2.reply.SerializeToString,
+            ),
+            'add_user': grpc.unary_unary_rpc_method_handler(
+                    servicer.add_user,
+                    request_deserializer=wallet__pb2.user.FromString,
+                    response_serializer=wallet__pb2.reply.SerializeToString,
+            ),
+            'remove_user': grpc.unary_unary_rpc_method_handler(
+                    servicer.remove_user,
                     request_deserializer=wallet__pb2.user.FromString,
                     response_serializer=wallet__pb2.reply.SerializeToString,
             ),
@@ -126,6 +158,40 @@ class wallet(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/databank.wallet/balance',
+            wallet__pb2.user.SerializeToString,
+            wallet__pb2.reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def add_user(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/databank.wallet/add_user',
+            wallet__pb2.user.SerializeToString,
+            wallet__pb2.reply.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def remove_user(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/databank.wallet/remove_user',
             wallet__pb2.user.SerializeToString,
             wallet__pb2.reply.FromString,
             options, channel_credentials,
