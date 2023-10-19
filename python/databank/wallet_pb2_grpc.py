@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import python.databank.wallet_pb2 as wallet__pb2
+from . import wallet_pb2 as wallet__pb2
 
 
 class walletStub(object):

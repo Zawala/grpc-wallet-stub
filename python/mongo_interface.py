@@ -1,4 +1,6 @@
 import pymongo
+from databank import wallet_pb2_grpc, wallet_pb2
+import grpc
 
 try: 
     myclient = pymongo.MongoClient("mongodb://0.0.0.0:27010/")
@@ -15,6 +17,7 @@ class wallet_user():
         self.username=username
 
     def credit_user(self, type, amount):
+        print(type, amount)
         myquery = { "username": self.username }
         try:
             old_wallet = mycol.find(myquery)
@@ -25,7 +28,7 @@ class wallet_user():
                 # Fetch the updated wallet
                 updated_wallet = mycol.find(myquery)
                 for wallet in updated_wallet:
-                    return wallet
+                    return wallet['balance']
         except Exception as e:
             return f"{e}"
 
@@ -41,15 +44,17 @@ class wallet_user():
                 # Fetch the updated wallet
                 updated_wallet = mycol.find(myquery)
                 for wallet in updated_wallet:
-                    print(wallet)
-                    return wallet
+                    return wallet['balance']
         except Exception as e:
             return f"{e}"
+        
+
     def get_balance(self):
         myquery = { "username": self.username }
-        mydoc = mycol.find(myquery)
-        return mydoc
-
+        updated_wallet = mycol.find(myquery)
+        for wallet in updated_wallet:
+            return wallet['balance']
+        
     def add_user(self):
         try:
             myquery = { "username": self.username }      
@@ -67,7 +72,6 @@ class wallet_user():
             return e
         
     def delete_user(self):
-        print(1)
         try:
             myquery = { "username": self.username }
             x = mycol.delete_one(myquery)
@@ -80,6 +84,3 @@ class wallet_user():
         
 
 
-if __name__ == '__main__':
-    new_user=wallet_user('kelvin zawala')
-    print(new_user.credit_user('monetary', 100))

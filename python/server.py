@@ -2,23 +2,51 @@ import grpc
 from concurrent import futures
 import time
 from mongo_interface import wallet_user
-from .databank import (wallet_pb2, wallet_pb2_grpc)
+from databank import (wallet_pb2, wallet_pb2_grpc)
 
-class walletServicer(wallet_pb2_grpc.wallet__pb2):
-    def credit(self,request, context):
-        response =  wallet_pb2.reply()
-        response.reply= users.display(request.name)
-        return response
+class walletServicer(wallet_pb2_grpc.walletServicer):
+    def credit(self,user, context):
+        print(user)
+        reply =  wallet_pb2.reply()
+        requested_user=wallet_user(user.username)
+        if user.voip:
+            print(1)
+            balance=requested_user.credit_user('voip', user.voip)
+            reply.voip= balance['voip']
+            reply.monetary= balance['monetary']
+        elif user.monetary:
+            print(2)
+            balance=requested_user.credit_user('monetary', user.monetary)
+            reply.voip= balance['voip']
+            reply.monetary= balance['monetary']
+        else:
+            reply.info='Error Request'
+            
+        return reply
 
-    def debit(self,request, context):
-        response =  wallet_pb2.reply()
-        response.value= users.delete(request.name)
-        return response
+    def debit(self,user, context):
+        reply =  wallet_pb2.reply()
+        requested_user=wallet_user(user.username)
+        if user.voip:
+            balance=requested_user.debit_user('voip', user.voip)
+            reply.voip= balance['voip']
+            reply.monetary= balance['monetary']
+        elif user.monetary:
+            balance=requested_user.debit_user('monetary', user.monetary)
+            reply.voip= balance['voip']
+            reply.monetary= balance['monetary']
+        else:
+            reply.info='Error Request'
+            
+        return reply
 
-    def balance(self,request, context):
-        response =  wallet_pb2.reply()
-        response.value= users.add(request.name, request.address)
-        return response
+    def balance(self,user, context):
+        reply =  wallet_pb2.reply()
+        requested_user=wallet_user(user.username)
+        balance=requested_user.get_balance()
+        reply.voip= balance['voip']
+        reply.monetary= balance['monetary']
+        return reply
 
 
 
@@ -26,7 +54,7 @@ def run():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     # use the generated function `add_CalculatorServicer_to_server`
     # to add the defined class to the server
-    wallet_pb2.add_usersServicer_to_server(
+    wallet_pb2_grpc.add_walletServicer_to_server(
             walletServicer(), server)
 
         # listen on port 50051
