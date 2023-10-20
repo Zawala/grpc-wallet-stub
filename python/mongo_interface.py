@@ -17,7 +17,6 @@ class wallet_user():
         self.username=username
 
     def credit_user(self, type, amount):
-        print(type, amount)
         myquery = { "username": self.username }
         try:
             old_wallet = mycol.find(myquery)
@@ -28,23 +27,33 @@ class wallet_user():
                 # Fetch the updated wallet
                 updated_wallet = mycol.find(myquery)
                 for wallet in updated_wallet:
-                    return wallet['balance']
+                    # Add a success message to the info field of the returned balance
+                    wallet_copy = wallet['balance'].copy()
+                    wallet_copy['info'] = 'Transaction successful'
+                    return wallet_copy
         except Exception as e:
-            return f"{e}"
+            # Add the exception message to the info field of the returned balance
+            return {'info': f"{e}"}
 
-    def debit_user(self,type, amount):
+    def debit_user(self, type, amount):
         myquery = { "username": self.username }
         try:
             old_wallet = mycol.find(myquery)
             for wallet in old_wallet:
-                print(1,wallet)
-                new_amount= float(wallet['balance'][f'{type}']-amount)
-                newvalues = { "$set": { f'balance.{type}': new_amount } }
-                mycol.update_one(myquery, newvalues)
-                # Fetch the updated wallet
-                updated_wallet = mycol.find(myquery)
-                for wallet in updated_wallet:
-                    return wallet['balance']
+                current_balance = float(wallet['balance'][f'{type}'])
+                if current_balance < amount:
+                    wallet_copy = wallet['balance'].copy()
+                    wallet_copy['info'] = 'Insufficient funds'
+                    return wallet_copy
+                else:
+                    new_amount = current_balance - amount
+                    newvalues = { "$set": { f'balance.{type}': new_amount } }
+                    mycol.update_one(myquery, newvalues)
+                    updated_wallet = mycol.find(myquery)
+                    for wallet in updated_wallet:
+                        wallet_copy = wallet['balance'].copy()
+                        wallet_copy['info'] = 'Transaction successful'
+                        return wallet_copy
         except Exception as e:
             return f"{e}"
         
@@ -81,6 +90,4 @@ class wallet_user():
                 return 'Error 404'
         except Exception as e:
             return e
-        
-
-
+ 

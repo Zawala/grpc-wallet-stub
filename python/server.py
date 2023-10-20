@@ -44,7 +44,6 @@ class walletServicer(wallet_pb2_grpc.walletServicer):
         reply =  wallet_pb2.reply()
         requested_user=wallet_user(user.username)
         balance=requested_user.get_balance()
-        print(2, balance)
         reply.voip= float(balance['voip'])
         reply.monetary= float(balance['monetary'])
         return reply
